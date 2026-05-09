@@ -1,43 +1,60 @@
-function checkAndBlock() {
-  const url = window.location.href;
-
-  if (
-    url.includes("youtube.com/shorts") ||
-    url.includes("facebook.com/reel") ||
-    url.includes("facebook.com/reels")
-  ) {
-    if (window.history.length > 1) {
-      window.history.back();
-    } else {
-      window.location.href = "https://www.youtube.com/";
-    }
-  }
-}
-
-function blockReels() {
-  const SELECTORS = [
-    'ytd-rich-shelf-renderer[is-shorts]',
-    'ytd-reel-shelf-renderer',
-    '[data-pagelet="ReelsUnit"]',
-    '[aria-label="Reels"]'
-  ];
-
-  SELECTORS.forEach(selector => {
-    document.querySelectorAll(selector).forEach(el => {
-      el.style.display = "none";
-    });
-  });
-}
-
+//  Always check storage FIRST before doing anything
 chrome.storage.local.get("isEnabled", (data) => {
   const isEnabled = data.isEnabled !== undefined ? data.isEnabled : true;
 
+  // If OFF → do nothing at all, let page run freely
   if (!isEnabled) return;
 
+  // Only runs if ON 
+  startBlocking();
+});
+
+//  Listen for toggle changes
+chrome.storage.onChanged.addListener((changes, area) => {
+  if (area === "local" && changes.isEnabled) {
+    location.reload();
+  }
+});
+
+//  All blocking logic wrapped in one function
+function startBlocking() {
+
+  function checkAndBlock() {
+    const url = window.location.href;
+
+    if (
+      url.includes("youtube.com/shorts") ||
+      url.includes("facebook.com/reel") ||
+      url.includes("facebook.com/reels")
+    ) {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = "https://www.youtube.com/";
+      }
+    }
+  }
+
+  function blockReels() {
+    const SELECTORS = [
+      'ytd-rich-shelf-renderer[is-shorts]',
+      'ytd-reel-shelf-renderer',
+      '[data-pagelet="ReelsUnit"]',
+      '[aria-label="Reels"]'
+    ];
+
+    SELECTORS.forEach(selector => {
+      document.querySelectorAll(selector).forEach(el => {
+        el.style.display = "none";
+      });
+    });
+  }
+
+  // Run immediately
   checkAndBlock();
   blockReels();
 
-  // ✅ Single combined observer
+  // Watch for page changes
   let lastUrl = location.href;
 
   const observer = new MutationObserver(() => {
@@ -54,11 +71,4 @@ chrome.storage.local.get("isEnabled", (data) => {
     childList: true,
     subtree: true
   });
-});
-
-// ✅ Handles both ON and OFF
-chrome.storage.onChanged.addListener((changes, area) => {
-  if (area === "local" && changes.isEnabled) {
-    location.reload();
-  }
-});
+}

@@ -5,6 +5,7 @@ const passwordSection = document.getElementById("passwordSection");
 const changeSection = document.getElementById("changeSection");
 const changePasswordBtn = document.getElementById("changePasswordBtn");
 const message = document.getElementById("message");
+const statusText = document.getElementById("statusText"); 
 
 // Load state
 chrome.storage.local.get(["isEnabled", "password"], (data) => {
@@ -65,43 +66,39 @@ setPasswordBtn.addEventListener("click", () => {
   chrome.storage.local.set({ password: passwordValue });
   message.textContent = "✅ Password saved!";
 
-  // Hide setup → show change button
   passwordSection.style.display = "none";
   changeSection.style.display = "block";
   passwordInput.value = "";
 });
 
-// Change password — asks old password first
+// Change password
 changePasswordBtn.addEventListener("click", () => {
   chrome.storage.local.get("password", (data) => {
 
-    // Step 1: Ask old password
     const oldInput = prompt("Enter your OLD password:");
     if (oldInput === null) return;
 
-    // Step 2: Compare
     if (oldInput !== data.password) {
       message.textContent = "❌ Wrong old password!";
       return;
     }
 
-    // Step 3: Ask new password
     const newInput = prompt("Enter your NEW password:");
     if (newInput === null) return;
 
-    // Step 4: New password can't be empty
     if (newInput === "") {
       message.textContent = "⚠️ New password can't be empty!";
       return;
     }
 
-    // Step 5: Save new password
     chrome.storage.local.set({ password: newInput });
-    message.textContent = "✅ Password changed!";
+    message.textContent = " Password changed!";
   });
 });
 
+//  statusText now works because it's declared above
 function updateButton(isEnabled) {
   toggleBtn.textContent = isEnabled ? "ON" : "OFF";
   toggleBtn.style.backgroundColor = isEnabled ? "#4CAF50" : "#f44336";
+  statusText.textContent = isEnabled ? "Blocking is active" : "Blocking is disabled";
 }

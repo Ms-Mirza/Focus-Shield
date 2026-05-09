@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Reel Blocker</title>
@@ -10,6 +11,7 @@
       font-family: Arial, sans-serif;
       text-align: center;
     }
+
     button {
       margin-top: 10px;
       padding: 8px 20px;
@@ -21,6 +23,7 @@
       color: white;
       width: 100%;
     }
+
     input {
       margin-top: 10px;
       padding: 8px;
@@ -30,47 +33,61 @@
       box-sizing: border-box;
       font-size: 14px;
     }
+
     #message {
       font-size: 13px;
       color: #555;
       min-height: 20px;
+      margin-top: 8px;
     }
+
     hr {
       margin: 16px 0;
       border: none;
       border-top: 1px solid #eee;
     }
+
     .section-label {
       font-size: 12px;
       color: #888;
     }
   </style>
 </head>
+
 <body>
 
-  <h2>Reel Blocker</h2>
+  <h2>FocusShield</h2>
+  <p>Block distracting reels and stay focused.</p>
   <button id="toggleBtn">ON</button>
+  <p id="statusText" style="font-size:13px; color:#666;">
+    Blocking is active
+  </p>
 
   <hr>
 
   <!-- First time setup -->
   <div id="passwordSection">
-    <p class="section-label">Set a password to lock toggle</p>
-    <input type="password" id="passwordInput" placeholder="Enter password">
+    <p class="section-label">Set password (required to turn OFF)</p>
+    <input type="password" id="passwordInput" placeholder="Set password (to lock OFF)">
     <button id="setPasswordBtn" style="background-color:#2196F3;">
-      Set Password
+      Save Password
     </button>
   </div>
 
   <!-- Change password — always visible after password is set -->
   <div id="changeSection" style="display:none;">
     <button id="changePasswordBtn" style="background-color:#FF9800;">
-      🔑 Change Password
+      Change Password
     </button>
   </div>
 
   <p id="message"></p>
 
   <script src="popup.js"></script>
+
+  <p style="font-size:10px; color:#aaa;">
+    Built for focus • v1.0
+  </p>
 </body>
+
 </html>
