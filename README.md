@@ -1,4 +1,4 @@
-# 🚫 Reel Blocker(V1.0)
+# 🚫 FocusShield(V1.0)
 
 A simple Chrome Extension that blocks YouTube Shorts and Facebook Reels — so you stay focused and in control.
 
