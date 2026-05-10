@@ -36,7 +36,7 @@ A simple Chrome Extension that blocks YouTube Shorts and Facebook Reels — so y
 1. Download or clone this repository
 
 ```bash
-git clone https://github.com/Ms-Mirza/reel-blocker.git
+git clone https://github.com/Ms-Mirza/Focus-Shield.git
 ```
 
 2. Open Chrome and go to:
